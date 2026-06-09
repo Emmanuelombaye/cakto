@@ -175,29 +175,71 @@ const App = () => {
                   </ResponsiveContainer>
                 </div>
               </div>
-              <div className="card">
+              <div className="card" style={{ gridColumn: '1 / -1' }}>
                 <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 16 }}>{t.paymentMethods}</div>
-                <div style={{ height: 300, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <ResponsiveContainer width="99%" height="100%" minWidth={1} minHeight={1}>
-                    <RechartsPieChart>
-                      <Pie
-                        data={paymentMethodData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={80}
-                        outerRadius={110}
-                        paddingAngle={5}
-                        dataKey="value"
-                        stroke="none"
-                      >
-                        {paymentMethodData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Pie>
-                      <RechartsTooltip contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'rgba(255,255,255,0.1)', borderRadius: 8, color: '#fff' }} />
-                      <Legend verticalAlign="bottom" height={36} iconType="circle" />
-                    </RechartsPieChart>
-                  </ResponsiveContainer>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 24 }}>
+                  
+                  {/* Template 1: Donut Chart */}
+                  <div style={{ height: 250, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 8 }}>Template 1: Donut</div>
+                    <ResponsiveContainer width="99%" height="100%" minWidth={1} minHeight={1}>
+                      <RechartsPieChart>
+                        <Pie
+                          data={paymentMethodData}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={60}
+                          outerRadius={80}
+                          paddingAngle={5}
+                          dataKey="value"
+                          stroke="none"
+                        >
+                          {paymentMethodData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <RechartsTooltip contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'rgba(255,255,255,0.1)', borderRadius: 8, color: '#fff' }} />
+                        <Legend verticalAlign="bottom" height={36} iconType="circle" />
+                      </RechartsPieChart>
+                    </ResponsiveContainer>
+                  </div>
+
+                  {/* Template 2: Bar Chart */}
+                  <div style={{ height: 250, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 8 }}>Template 2: Bar</div>
+                    <ResponsiveContainer width="99%" height="100%" minWidth={1} minHeight={1}>
+                      <BarChart data={paymentMethodData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                        <XAxis dataKey="name" stroke="var(--text-secondary)" fontSize={12} tickLine={false} axisLine={false} />
+                        <RechartsTooltip contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'rgba(255,255,255,0.1)', borderRadius: 8, color: '#fff' }} cursor={{fill: 'rgba(255,255,255,0.05)'}} />
+                        <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+                          {paymentMethodData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+
+                  {/* Template 3: Line Chart */}
+                  <div style={{ height: 250, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 8 }}>Template 3: Line</div>
+                    <ResponsiveContainer width="99%" height="100%" minWidth={1} minHeight={1}>
+                      <AreaChart data={paymentMethodData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                        <defs>
+                          <linearGradient id="colorPay" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#F59E0B" stopOpacity={0.3}/>
+                            <stop offset="95%" stopColor="#F59E0B" stopOpacity={0}/>
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                        <XAxis dataKey="name" stroke="var(--text-secondary)" fontSize={12} tickLine={false} axisLine={false} />
+                        <RechartsTooltip contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'rgba(255,255,255,0.1)', borderRadius: 8, color: '#fff' }} />
+                        <Area type="monotone" dataKey="value" stroke="#F59E0B" strokeWidth={3} fillOpacity={1} fill="url(#colorPay)" />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+
                 </div>
               </div>
               <div className="card">
