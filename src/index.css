@@ -819,3 +819,233 @@ body {
   text-align: right;
   margin-top: 2px;
 }
+
+/* Sidebar states */
+.sidebar-closed .sidebar {
+  width: 0;
+  border-right: none;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar-open .sidebar {
+  width: var(--sidebar-width);
+}
+
+.sidebar-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: var(--transition-smooth);
+}
+
+.sidebar-toggle:hover {
+  background-color: rgba(156, 163, 175, 0.1);
+}
+
+.sidebar-overlay {
+  display: none;
+}
+
+/* Responsive Grid classes */
+.grid-2-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.grid-3-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+}
+
+.grid-4-col {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.grid-2to1-col {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+/* Tables styling */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.data-table-header.col-2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.data-table-header.col-4 {
+  grid-template-columns: 2fr 1fr 1fr 80px;
+}
+
+.data-table-header.col-6 {
+  grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 80px;
+}
+
+.data-table-header.col-7 {
+  grid-template-columns: 40px 1fr 1fr 1.5fr 1fr 1fr 1fr;
+}
+
+/* Media Queries */
+@media (max-width: 1024px) {
+  .grid-3-col {
+    grid-template-columns: 1fr 1fr;
+  }
+  .grid-4-col {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000;
+    transform: translateX(-100%);
+    box-shadow: none;
+  }
+
+  .sidebar-open .sidebar {
+    transform: translateX(0);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .sidebar-closed .sidebar {
+    transform: translateX(-100%);
+    opacity: 1; /* keep opaque for smooth slide transition */
+    width: var(--sidebar-width);
+    pointer-events: none;
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+  }
+
+  .main-content {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .top-header {
+    padding: 0 16px;
+  }
+
+  .top-header .search-input-wrapper {
+    display: none;
+  }
+
+  .page-content {
+    padding: 16px;
+  }
+
+  .grid-2-col, .grid-3-col, .grid-4-col, .grid-2to1-col {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .grid-3-col > .card {
+    grid-column: auto !important;
+  }
+
+  /* Vitrine specific styling adjustments */
+  .vitrine-banner {
+    padding: 24px 16px;
+    margin-bottom: 20px;
+  }
+
+  .filters-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .filters-row .search-input-wrapper,
+  .filters-right {
+    width: 100%;
+  }
+
+  .filters-right {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .filters-right .custom-select-wrapper,
+  .filters-right .custom-select {
+    width: 100% !important;
+  }
+
+  .filters-right button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Product details drawer */
+  .drawer-overlay {
+    z-index: 2000;
+  }
+
+  .drawer-content {
+    width: 100% !important;
+    max-width: 100%;
+  }
+
+  /* Warning banner wrap text */
+  .warning-banner {
+    padding: 8px 12px;
+    font-size: 12px;
+    flex-wrap: wrap;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 12px;
+  }
+
+  .page-header div {
+    width: 100%;
+  }
+
+  .page-header .btn-secondary,
+  .page-header .btn-primary,
+  .page-header .custom-select-wrapper {
+    width: 100%;
+  }
+
+  .page-header .custom-select {
+    width: 100%;
+  }
+}

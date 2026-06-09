@@ -11,8 +11,20 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsToolti
 import { translations } from './i18n';
 
 const App = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
   const [activeTab, setActiveTab] = useState('products');
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setSidebarOpen(false);
+      } else {
+        setSidebarOpen(true);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   const [theme, setTheme] = useState('dark');
   const [lang, setLang] = useState('pt-BR');
   
@@ -135,7 +147,7 @@ const App = () => {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
+            <div className="grid-2-col" style={{ marginBottom: 16 }}>
               <div className="card" style={{ position: 'relative' }}>
                 <div style={{ color: 'var(--text-secondary)', fontSize: 12, marginBottom: 16 }}>{t.revenue}</div>
                 <div style={{ fontSize: 32, fontWeight: 700 }}>R$ 0,00</div>
@@ -154,7 +166,7 @@ const App = () => {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 24, marginBottom: 24 }}>
+            <div className="grid-3-col" style={{ marginBottom: 24 }}>
               <div className="card">
                 <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 16 }}>{t.salesOverTime}</div>
                 <div style={{ height: 300 }}>
@@ -421,14 +433,18 @@ const App = () => {
                 </div>
               </div>
               
-              <div className="data-table-header" style={{ gridTemplateColumns: '1fr 1fr 1fr 40px' }}>
-                <div>{t.colName}</div><div>{t.colPrice}</div><div>{t.colStatus}</div><div></div>
-              </div>
-              <div style={{ padding: '16px 24px', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 40px', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                <div>Curso de programação</div><div>R$ 20,00</div><div><span className="status-badge status-active">{t.statusActive}</span></div><div style={{ textAlign: 'right' }}><MoreVertical size={16} color="var(--text-secondary)" cursor="pointer" /></div>
-              </div>
-              <div style={{ padding: '16px 24px', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 40px', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                <div>Curso de programação</div><div>R$ 20,00</div><div><span className="status-badge status-active">{t.statusActive}</span></div><div style={{ textAlign: 'right' }}><MoreVertical size={16} color="var(--text-secondary)" cursor="pointer" /></div>
+              <div className="table-wrapper">
+                <div className="table-inner" style={{ minWidth: 600 }}>
+                  <div className="data-table-header" style={{ gridTemplateColumns: '1fr 1fr 1fr 40px' }}>
+                    <div>{t.colName}</div><div>{t.colPrice}</div><div>{t.colStatus}</div><div></div>
+                  </div>
+                  <div style={{ padding: '16px 24px', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 40px', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <div>Curso de programação</div><div>R$ 20,00</div><div><span className="status-badge status-active">{t.statusActive}</span></div><div style={{ textAlign: 'right' }}><MoreVertical size={16} color="var(--text-secondary)" cursor="pointer" /></div>
+                  </div>
+                  <div style={{ padding: '16px 24px', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 40px', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <div>Curso de programação</div><div>R$ 20,00</div><div><span className="status-badge status-active">{t.statusActive}</span></div><div style={{ textAlign: 'right' }}><MoreVertical size={16} color="var(--text-secondary)" cursor="pointer" /></div>
+                  </div>
+                </div>
               </div>
               
               <div style={{ padding: 24, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 16 }}>
@@ -458,7 +474,7 @@ const App = () => {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
+            <div className="grid-2-col" style={{ marginBottom: 16 }}>
               <div className="card" style={{ position: 'relative' }}>
                 <div style={{ color: 'var(--text-secondary)', fontSize: 12, marginBottom: 16 }}>{t.salesFound}</div>
                 <div style={{ fontSize: 32, fontWeight: 700 }}>0</div>
@@ -471,7 +487,7 @@ const App = () => {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 32 }}>
+            <div className="grid-4-col" style={{ marginBottom: 32 }}>
               <div className="card" style={{ position: 'relative' }}>
                 <div style={{ color: 'var(--text-secondary)', fontSize: 12, marginBottom: 16 }}>{t.totalRefunded}</div>
                 <div style={{ fontSize: 24, fontWeight: 700 }}>R$ 0,00</div>
@@ -513,11 +529,15 @@ const App = () => {
                 </button>
               </div>
               
-              <div className="data-table-header" style={{ gridTemplateColumns: '1fr 2fr 1.5fr 1fr 1fr 1fr' }}>
-                <div>{t.colDate}</div><div>{t.colProduct}</div><div>{t.colClient}</div><div>{t.colStatus}</div><div>{t.colInterest}</div><div>{t.colNetValue}</div>
-              </div>
-              <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-secondary)', fontSize: 13 }}>
-                {t.noRecords}
+              <div className="table-wrapper">
+                <div className="table-inner" style={{ minWidth: 800 }}>
+                  <div className="data-table-header" style={{ gridTemplateColumns: '1fr 2fr 1.5fr 1fr 1fr 1fr' }}>
+                    <div>{t.colDate}</div><div>{t.colProduct}</div><div>{t.colClient}</div><div>{t.colStatus}</div><div>{t.colInterest}</div><div>{t.colNetValue}</div>
+                  </div>
+                  <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-secondary)', fontSize: 13 }}>
+                    {t.noRecords}
+                  </div>
+                </div>
               </div>
             </div>
           </>
@@ -543,7 +563,7 @@ const App = () => {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
+            <div className="grid-2-col" style={{ marginBottom: 16 }}>
               <div className="card" style={{ position: 'relative', borderLeft: '4px solid #305CDE' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-secondary)', fontSize: 12, marginBottom: 16 }}>
                   <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>{t.subsActive} <HelpCircle size={12}/></span>
@@ -568,7 +588,7 @@ const App = () => {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 32 }}>
+            <div className="grid-3-col" style={{ marginBottom: 32 }}>
               <div className="card" style={{ position: 'relative', borderLeft: '4px solid #305CDE' }}>
                 <div style={{ color: 'var(--text-secondary)', fontSize: 12, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 4 }}>{t.subsLtv} <HelpCircle size={12}/></div>
                 <div style={{ fontSize: 24, fontWeight: 700 }}>R$ 0,00</div>
@@ -597,12 +617,16 @@ const App = () => {
                 </button>
               </div>
               
-              <div className="data-table-header" style={{ gridTemplateColumns: '40px 1fr 1fr 1.5fr 1fr 1fr 1fr 1fr 80px' }}>
-                <div><input type="checkbox" style={{ accentColor: 'var(--accent-primary)' }}/></div>
-                <div>{t.colDate}</div><div>{t.colPlan}</div><div>{t.colProduct}</div><div>{t.colMember}</div><div>{t.colCommission}</div><div>{t.colRenewsOn}</div><div>{t.colStatus}</div><div>{t.colActions}</div>
-              </div>
-              <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-secondary)', fontSize: 13 }}>
-                {t.noRecords}
+              <div className="table-wrapper">
+                <div className="table-inner" style={{ minWidth: 1000 }}>
+                  <div className="data-table-header" style={{ gridTemplateColumns: '40px 1fr 1fr 1.5fr 1fr 1fr 1fr 1fr 80px' }}>
+                    <div><input type="checkbox" style={{ accentColor: 'var(--accent-primary)' }}/></div>
+                    <div>{t.colDate}</div><div>{t.colPlan}</div><div>{t.colProduct}</div><div>{t.colMember}</div><div>{t.colCommission}</div><div>{t.colRenewsOn}</div><div>{t.colStatus}</div><div>{t.colActions}</div>
+                  </div>
+                  <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-secondary)', fontSize: 13 }}>
+                    {t.noRecords}
+                  </div>
+                </div>
               </div>
             </div>
           </>
@@ -662,11 +686,15 @@ const App = () => {
                 <div style={{ borderTop: '1px dashed rgba(255,255,255,0.1)', height: '0%' }}><span style={{ position: 'relative', top: -10, color: 'var(--text-secondary)', fontSize: 10 }}>0</span></div>
               </div>
 
-              <div className="data-table-header" style={{ gridTemplateColumns: '1fr 1fr' }}>
-                <div>{t.colDate}</div><div style={{ textAlign: 'center' }}>{t.colTotal}</div>
-              </div>
-              <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-secondary)', fontSize: 13 }}>
-                {t.noRecords}
+              <div className="table-wrapper">
+                <div className="table-inner" style={{ minWidth: 400 }}>
+                  <div className="data-table-header col-2">
+                    <div>{t.colDate}</div><div style={{ textAlign: 'center' }}>{t.colTotal}</div>
+                  </div>
+                  <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-secondary)', fontSize: 13 }}>
+                    {t.noRecords}
+                  </div>
+                </div>
               </div>
             </div>
           </>
@@ -707,12 +735,16 @@ const App = () => {
                 </div>
               </div>
               
-              <div className="data-table-header" style={{ gridTemplateColumns: '40px 1fr 1fr 1.5fr 1fr 1fr 1fr' }}>
-                <div><input type="checkbox" style={{ accentColor: 'var(--accent-primary)', width: 16, height: 16, borderRadius: 4, cursor: 'pointer' }}/></div>
-                <div>Data</div><div>Nome</div><div>E-Mail</div><div>Produto</div><div>Comissão</div><div>Status</div>
-              </div>
-              <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-secondary)', fontSize: 13, borderBottom: '1px solid var(--border-color)' }}>
-                Nenhum registro encontrado
+              <div className="table-wrapper">
+                <div className="table-inner" style={{ minWidth: 800 }}>
+                  <div className="data-table-header col-7">
+                    <div><input type="checkbox" style={{ accentColor: 'var(--accent-primary)', width: 16, height: 16, borderRadius: 4, cursor: 'pointer' }}/></div>
+                    <div>Data</div><div>Nome</div><div>E-Mail</div><div>Produto</div><div>Comissão</div><div>Status</div>
+                  </div>
+                  <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-secondary)', fontSize: 13, borderBottom: '1px solid var(--border-color)' }}>
+                    Nenhum registro encontrado
+                  </div>
+                </div>
               </div>
             </div>
           </>
@@ -731,7 +763,7 @@ const App = () => {
               </button>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
+            <div className="grid-2-col" style={{ marginBottom: 16 }}>
               <div className="card" style={{ position: 'relative', borderLeft: '4px solid #00E676', padding: '24px', display: 'flex', flexDirection: 'column', gap: 24 }}>
                 <div style={{ color: 'var(--text-secondary)', fontSize: 13, fontWeight: 600 }}>Saldo Disponível</div>
                 <div style={{ width: '80px', height: '24px', background: 'rgba(255,255,255,0.05)', borderRadius: 4 }}></div>
@@ -756,7 +788,7 @@ const App = () => {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
+            <div className="grid-2-col" style={{ gap: 32 }}>
               <div>
                 <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>Completar cadastro</h3>
                 <p style={{ color: 'var(--text-secondary)', fontSize: 13 }}>Preencha seus dados para receber o dinheiro das suas vendas</p>
@@ -836,7 +868,7 @@ const App = () => {
               </div>
             </div>
             
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 16, marginBottom: 24 }}>
+            <div className="grid-4-col" style={{ marginBottom: 24 }}>
               {[
                 { title: 'Enviados', count: '0', color: '#305CDE' },
                 { title: 'Entregues', count: '0', color: '#10B981' },
@@ -850,8 +882,8 @@ const App = () => {
                 </div>
               ))}
             </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 24 }}>
+ 
+            <div className="grid-2to1-col">
               <div className="card" style={{ padding: 48, textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 300 }}>
                 <GitBranch size={48} color="var(--text-secondary)" style={{ marginBottom: 16, opacity: 0.5 }} />
                 <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 8 }}>Nenhum webhook encontrado</h3>
@@ -869,14 +901,14 @@ const App = () => {
             </div>
           </>
         );
-
-      case 'caktoAPI':
+ 
+       case 'caktoAPI':
         return (
           <>
             <div className="page-header" style={{ marginBottom: 24 }}>
               <h1 className="page-title">Cakto API</h1>
             </div>
-
+ 
             <div className="card" style={{ padding: 24, marginBottom: 24, display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderLeft: '4px solid var(--accent-primary)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
                 <div style={{ width: 48, height: 48, background: 'rgba(48, 92, 222, 0.1)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -891,7 +923,7 @@ const App = () => {
                 Acessar Docs <ArrowUpRight size={16} />
               </button>
             </div>
-
+ 
             <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
               <div style={{ padding: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
@@ -909,17 +941,21 @@ const App = () => {
                 </div>
               </div>
               
-              <div className="data-table-header" style={{ gridTemplateColumns: '2fr 1fr 1fr 80px' }}>
-                <div>Nome da Chave</div><div>Data de Criação</div><div>Permissões</div><div></div>
-              </div>
-              <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-secondary)', fontSize: 13, borderBottom: '1px solid var(--border-color)' }}>
-                Nenhuma chave de API encontrada
+              <div className="table-wrapper">
+                <div className="table-inner" style={{ minWidth: 600 }}>
+                  <div className="data-table-header col-4">
+                    <div>Nome da Chave</div><div>Data de Criação</div><div>Permissões</div><div></div>
+                  </div>
+                  <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-secondary)', fontSize: 13, borderBottom: '1px solid var(--border-color)' }}>
+                    Nenhuma chave de API encontrada
+                  </div>
+                </div>
               </div>
             </div>
           </>
         );
-
-      case 'coupons':
+ 
+       case 'coupons':
         return (
           <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
             <div style={{ padding: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -934,11 +970,15 @@ const App = () => {
                 </button>
               </div>
             </div>
-            <div className="data-table-header" style={{ gridTemplateColumns: '1.5fr 1fr 1fr 1fr 1fr 80px' }}>
-              <div>{t.colCode}</div><div>{t.colDiscount}</div><div>{t.colStart}</div><div>{t.colEnd}</div><div>{t.colUses}</div><div></div>
-            </div>
-            <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-secondary)', fontSize: 13 }}>
-              {t.noRecords}
+            <div className="table-wrapper">
+              <div className="table-inner" style={{ minWidth: 600 }}>
+                <div className="data-table-header col-6">
+                  <div>{t.colCode}</div><div>{t.colDiscount}</div><div>{t.colStart}</div><div>{t.colEnd}</div><div>{t.colUses}</div><div></div>
+                </div>
+                <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-secondary)', fontSize: 13 }}>
+                  {t.noRecords}
+                </div>
+              </div>
             </div>
           </div>
         );
@@ -954,6 +994,7 @@ const App = () => {
 
   return (
     <div className={`app-container ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+      {sidebarOpen && <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)}></div>}
       <aside className="sidebar">
         <div className="sidebar-logo">
           <img src="https://app.cakto.com.br/assets/cakto-h-logo.svg" alt="cakto" height="32" />
@@ -998,6 +1039,10 @@ const App = () => {
         </div>
 
         <header className="top-header">
+          <button className="sidebar-toggle" onClick={() => setSidebarOpen(!sidebarOpen)} aria-label="Toggle Sidebar">
+            <Menu size={20} />
+          </button>
+
           <div className="search-input-wrapper">
             <Search className="search-icon" size={18} />
             <input className="custom-input" type="text" placeholder={t.search} />
