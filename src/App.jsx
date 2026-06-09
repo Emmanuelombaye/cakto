@@ -25,6 +25,14 @@ const App = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useEffect(() => {
+    if (window.innerWidth <= 768) {
+      setSidebarOpen(false);
+    }
+    setIsProfileOpen(false);
+  }, [activeTab]);
+
   const [theme, setTheme] = useState('dark');
   const [lang, setLang] = useState('pt-BR');
   
@@ -136,7 +144,7 @@ const App = () => {
                 <h1 className="page-title">{t.dashboardTitle}</h1>
                 <p style={{ color: 'var(--text-secondary)', fontSize: 12 }}>{t.lastUpdate}</p>
               </div>
-              <div style={{ display: 'flex', gap: 12 }}>
+              <div className="header-flex-actions">
                 <button className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <Filter size={14} /> {t.filtersBtn}
                 </button>
@@ -189,7 +197,7 @@ const App = () => {
               </div>
               <div className="card" style={{ gridColumn: '1 / -1' }}>
                 <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 16 }}>{t.paymentMethods}</div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 24 }}>
+                <div className="payment-methods-grid">
                   
                   {/* Template 1: Donut Chart */}
                   <div style={{ height: 250, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -464,7 +472,7 @@ const App = () => {
                 <h1 className="page-title">{t.mySalesTitle}</h1>
                 <p style={{ color: 'var(--text-secondary)', fontSize: 12 }}>{t.lastUpdate}</p>
               </div>
-              <div style={{ display: 'flex', gap: 12 }}>
+              <div className="header-flex-actions">
                 <button className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   {t.updateBtn} <RefreshCw size={14} />
                 </button>
@@ -551,7 +559,7 @@ const App = () => {
                 <h1 className="page-title">{t.subsTitle}</h1>
                 <p style={{ color: 'var(--text-secondary)', fontSize: 12 }}>{t.lastUpdate}</p>
               </div>
-              <div style={{ display: 'flex', gap: 12 }}>
+              <div className="header-flex-actions">
                 <div className="custom-select-wrapper">
                   <span style={{ position: 'absolute', top: -10, left: 12, fontSize: 10, background: 'var(--bg-main)', padding: '0 4px', color: 'var(--text-secondary)', zIndex: 1 }}>Período</span>
                   <select className="custom-select" style={{ minWidth: 120, position: 'relative' }}><option>Sempre</option></select>
@@ -666,7 +674,7 @@ const App = () => {
                   </div>
                 </div>
                 
-                <div style={{ display: 'flex', gap: 12 }}>
+                <div className="header-flex-actions">
                   <div className="custom-select-wrapper">
                     <select className="custom-select" style={{ minWidth: 120 }}><option>Barras</option></select>
                     <ChevronDown className="select-icon" size={16} />
@@ -725,7 +733,7 @@ const App = () => {
                   <Search className="search-icon" size={18} />
                   <input className="custom-input" type="text" placeholder="Pesquisar" />
                 </div>
-                <div style={{ display: 'flex', gap: 12 }}>
+                <div className="header-flex-actions">
                   <button className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <MoreVertical size={14} /> Ações
                   </button>
@@ -930,7 +938,7 @@ const App = () => {
                   <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 8 }}>Chaves de API</h3>
                   <p style={{ color: 'var(--text-secondary)', fontSize: 13 }}>Gerencie suas credenciais de API para integrações personalizadas.</p>
                 </div>
-                <div style={{ display: 'flex', gap: 12 }}>
+                <div className="header-flex-actions">
                   <div className="search-input-wrapper" style={{ margin: 0 }}>
                     <Search className="search-icon" size={18} />
                     <input className="custom-input" type="text" placeholder="Pesquisar chave..." />
@@ -960,7 +968,7 @@ const App = () => {
           <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
             <div style={{ padding: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h3 style={{ fontSize: 16, fontWeight: 600 }}>{t.coupTitle}</h3>
-              <div style={{ display: 'flex', gap: 12 }}>
+              <div className="header-flex-actions">
                 <div className="search-input-wrapper" style={{ margin: 0 }}>
                   <Search className="search-icon" size={18} />
                   <input className="custom-input" type="text" placeholder={t.search} />
@@ -1033,7 +1041,7 @@ const App = () => {
       </aside>
 
       <main className="main-content">
-        <div className="warning-banner">
+        <div className="warning-banner" onClick={() => setActiveTab('financial')} style={{ cursor: 'pointer' }}>
           <TriangleAlert size={18} />
           <span>{t.warningBanner}</span>
         </div>

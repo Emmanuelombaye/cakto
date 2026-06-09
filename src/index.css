@@ -350,6 +350,7 @@ body {
   padding: 24px;
   box-shadow: var(--shadow-sm);
   margin-bottom: 24px;
+  min-width: 0;
 }
 
 /* Forms & Inputs */
@@ -1048,4 +1049,48 @@ body {
   .page-header .custom-select {
     width: 100%;
   }
+
+  /* Header flex actions stacking on mobile */
+  .header-flex-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .header-flex-actions > button,
+  .header-flex-actions > .custom-select-wrapper,
+  .header-flex-actions > .custom-select {
+    width: 100% !important;
+    justify-content: center;
+  }
+
+  /* Payment methods grid scaling */
+  .payment-methods-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* Profile dropdown placement adjust */
+  .profile-dropdown {
+    width: 280px !important;
+    right: -10px !important;
+  }
+}
+
+/* Global banner clickable indicator */
+.warning-banner {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+.warning-banner:hover {
+  opacity: 0.9;
+}
+
+/* Payment methods grid default styling */
+.payment-methods-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
 }
