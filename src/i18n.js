@@ -37,6 +37,10 @@ export const translations = {
     saveGoal: 'Salvar',
     goalPlaceholder: 'Ex: 10000',
     iconPlaceholder: 'Emoji',
+    adminPanel: 'Painel Admin',
+    currentRevenue: 'Faturamento Atual',
+    revenueGoal: 'Meta de Faturamento',
+    cancel: 'Cancelar',
     
     // Products
     myProductsTab: 'Meus Produtos',
@@ -170,6 +174,10 @@ export const translations = {
     saveGoal: 'Save',
     goalPlaceholder: 'Ex: 10000',
     iconPlaceholder: 'Emoji',
+    adminPanel: 'Admin Panel',
+    currentRevenue: 'Current Revenue',
+    revenueGoal: 'Revenue Goal',
+    cancel: 'Cancel',
     
     // Products
     myProductsTab: 'My Products',
@@ -303,6 +311,10 @@ export const translations = {
     saveGoal: 'Guardar',
     goalPlaceholder: 'Ej: 10000',
     iconPlaceholder: 'Emoji',
+    adminPanel: 'Panel de Administración',
+    currentRevenue: 'Ingresos Actuales',
+    revenueGoal: 'Meta de Ingresos',
+    cancel: 'Cancelar',
     
     // Products
     myProductsTab: 'Mis Productos',

@@ -19,6 +19,10 @@ const App = () => {
   const [faturamentoGoal, setFaturamentoGoal] = useState(10000);
   const [faturamentoCurrent, setFaturamentoCurrent] = useState(0);
   const [faturamentoIcon, setFaturamentoIcon] = useState('🌵');
+  const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
+  const [tempGoal, setTempGoal] = useState(10000);
+  const [tempCurrent, setTempCurrent] = useState(0);
+  const [tempIcon, setTempIcon] = useState('🌵');
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [activeSubTab, setActiveSubTab] = useState('apps');
@@ -913,22 +917,6 @@ const App = () => {
           <img src="https://app.cakto.com.br/assets/cakto-h-logo.svg" alt="cakto" height="32" />
         </div>
 
-        <div className="sidebar-progress" style={{ border: '1px solid rgba(255, 215, 0, 0.3)', background: 'rgba(255, 215, 0, 0.05)', marginBottom: 24, padding: '12px 16px', borderRadius: 8, margin: '0 16px 24px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div style={{ fontSize: 24 }}>{faturamentoIcon}</div>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 11, fontWeight: 600, color: '#FFFFFF', marginBottom: 4 }}>{t.revenue}</div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: '#FFFFFF' }}>R$ {faturamentoCurrent.toLocaleString('pt-BR')} / R$ {(faturamentoGoal / 1000).toFixed(0)}K</div>
-            </div>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }}>
-            <div className="progress-bar-container" style={{ flex: 1, margin: 0, height: 6, background: 'rgba(255, 255, 255, 0.1)', borderRadius: 3 }}>
-              <div className="progress-bar-fill" style={{ width: `${Math.min((faturamentoCurrent / faturamentoGoal) * 100, 100)}%`, background: 'rgba(255, 255, 255, 0.3)', borderRadius: 3 }}></div>
-            </div>
-            <div style={{ fontSize: 11, fontWeight: 700, color: '#FFFFFF' }}>{((faturamentoCurrent / faturamentoGoal) * 100).toFixed(0)}%</div>
-          </div>
-        </div>
-
         <nav className="sidebar-nav">
           {menuItems.map(item => (
             <React.Fragment key={item.id}>
@@ -992,8 +980,34 @@ const App = () => {
               <div className="profile-avatar" onClick={() => setIsProfileOpen(!isProfileOpen)} style={{ cursor: 'pointer' }}>N</div>
               
               {isProfileOpen && (
-                <div className="profile-dropdown">
-                  <div className="profile-dropdown-header" style={{ marginBottom: 16 }}>
+                <div className="profile-dropdown" style={{ width: 300 }}>
+                  <div className="sidebar-progress" style={{ border: '1px solid rgba(255, 215, 0, 0.3)', background: 'rgba(255, 215, 0, 0.05)', marginBottom: 16, padding: '12px 16px', borderRadius: 8 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                      <div style={{ fontSize: 24 }}>{faturamentoIcon}</div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 11, fontWeight: 600, color: '#FFFFFF', marginBottom: 4 }}>{t.revenue}</div>
+                        <div style={{ fontSize: 13, fontWeight: 700, color: '#FFFFFF' }}>R$ {faturamentoCurrent.toLocaleString('pt-BR')} / R$ {(faturamentoGoal / 1000).toFixed(0)}K</div>
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }}>
+                      <div className="progress-bar-container" style={{ flex: 1, margin: 0, height: 6, background: 'rgba(255, 255, 255, 0.1)', borderRadius: 3 }}>
+                        <div className="progress-bar-fill" style={{ width: `${Math.min((faturamentoCurrent / faturamentoGoal) * 100, 100)}%`, background: 'rgba(255, 255, 255, 0.3)', borderRadius: 3 }}></div>
+                      </div>
+                      <div style={{ fontSize: 11, fontWeight: 700, color: '#FFFFFF' }}>{((faturamentoCurrent / faturamentoGoal) * 100).toFixed(0)}%</div>
+                    </div>
+                  </div>
+                  
+                  <div className="custom-dropdown-item" onClick={() => {
+                    setTempGoal(faturamentoGoal);
+                    setTempCurrent(faturamentoCurrent);
+                    setTempIcon(faturamentoIcon);
+                    setIsAdminPanelOpen(true);
+                    setIsProfileOpen(false);
+                  }}>
+                    <Edit2 size={16} /> {t.adminPanel}
+                  </div>
+
+                  <div className="profile-dropdown-header" style={{ marginBottom: 8, marginTop: 8 }}>
                     <div style={{ fontWeight: 600 }}>{t.team}</div>
                   </div>
                   <div className="custom-dropdown-item">
@@ -1015,6 +1029,37 @@ const App = () => {
           {renderContent()}
         </div>
       </main>
+
+      {isAdminPanelOpen && (
+        <div className="drawer-overlay" style={{ zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => setIsAdminPanelOpen(false)}>
+          <div className="card" style={{ width: 400, maxWidth: '90%', margin: 'auto' }} onClick={e => e.stopPropagation()}>
+            <h3 style={{ marginBottom: 24, fontSize: 18, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}>
+              <Edit2 size={20} color="var(--accent-primary)" /> {t.adminPanel} - {t.editGoal}
+            </h3>
+            <div style={{ marginBottom: 16 }}>
+              <label style={{ display: 'block', marginBottom: 8, fontSize: 14 }}>{t.currentRevenue}</label>
+              <input type="number" className="custom-input" value={tempCurrent} onChange={e => setTempCurrent(Number(e.target.value))} />
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <label style={{ display: 'block', marginBottom: 8, fontSize: 14 }}>{t.revenueGoal}</label>
+              <input type="number" className="custom-input" value={tempGoal} onChange={e => setTempGoal(Number(e.target.value))} />
+            </div>
+            <div style={{ marginBottom: 24 }}>
+              <label style={{ display: 'block', marginBottom: 8, fontSize: 14 }}>{t.iconPlaceholder}</label>
+              <input type="text" className="custom-input" value={tempIcon} onChange={e => setTempIcon(e.target.value)} />
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12 }}>
+              <button className="btn-secondary" onClick={() => setIsAdminPanelOpen(false)}>{t.cancel}</button>
+              <button className="btn-primary" onClick={() => {
+                setFaturamentoGoal(tempGoal);
+                setFaturamentoCurrent(tempCurrent);
+                setFaturamentoIcon(tempIcon);
+                setIsAdminPanelOpen(false);
+              }}>{t.saveGoal}</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
